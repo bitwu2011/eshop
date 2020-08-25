@@ -57,5 +57,22 @@ public class OrderStateManagerImpl implements OrderStateManager {
 	public void cancel(OrderInfoDTO order) throws Exception {
 		canceledOrderState.doTransition(order); 
 	}
-	
+
+	@Override
+	public Boolean canPay(OrderInfoDTO order) throws Exception {
+		OrderState orderState = orderStateFactory.get(order);
+		return orderState.canPay(order);
+	}
+
+	/**
+	 * 支付订单
+	 * @param order
+	 * @throws Exception
+	 */
+	@Override
+	public void pay(OrderInfoDTO order) throws Exception {
+		OrderState orderState = orderStateFactory.get(order);
+		orderState.doTransition(order);
+	}
+
 }

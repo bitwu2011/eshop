@@ -46,5 +46,15 @@ public class WaitForPayOrderState implements OrderState {
 	public Boolean canCancel(OrderInfoDTO order) {
 		return true;
 	}
-	
+
+	@Override
+	public Boolean canPay(OrderInfoDTO order) throws Exception {
+		return true;
+	}
+
+	@Override
+	public void Pay(OrderInfoDTO order) throws Exception {
+
+	}
+
 }

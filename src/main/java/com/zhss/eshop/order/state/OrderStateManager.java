@@ -30,5 +30,20 @@ public interface OrderStateManager {
 	 * @throws Exception
 	 */
 	void cancel(OrderInfoDTO order) throws Exception;
+
+	/**
+	 * 判断能够进行支付操作
+	 * @param order
+	 * @return
+	 * @throws Exception
+	 */
+	public Boolean canPay(OrderInfoDTO order) throws Exception;
+
+	/**
+	 * 进行支付操作
+	 * @param order
+	 * @throws Exception
+	 */
+	public void pay(OrderInfoDTO order) throws Exception;
 	
 }
