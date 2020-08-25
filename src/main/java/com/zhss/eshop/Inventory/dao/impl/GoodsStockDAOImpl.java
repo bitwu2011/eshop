@@ -25,7 +25,7 @@ public class GoodsStockDAOImpl implements GoodsStockDAO {
 	@Autowired
 	private GoodsStockMapper goodsStockMapper;
 	
-	/**
+	/**GoodsStockDAOImpl
 	 * 根据商品sku id查询商品库存
 	 * @param goodsSkuId 商品sku id
 	 * @return 商品库存

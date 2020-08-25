@@ -15,8 +15,8 @@ import com.zhss.eshop.order.domain.OrderInfoDTO;
 import com.zhss.eshop.purchase.domain.PurchaseOrderDTO;
 import com.zhss.eshop.purchase.domain.PurchaseOrderItemDTO;
 import com.zhss.eshop.schedule.service.ScheduleService;
-import com.zhss.eshop.schedule.stock.PurchaseInputStockUpdaterFactory;
-import com.zhss.eshop.schedule.stock.ReturnGoodsInputStockUpdaterFactory;
+import com.zhss.eshop.schedule.stock.SchedulePurchaseInputStockUpdaterFactory;
+import com.zhss.eshop.schedule.stock.ScheduleReturnGoodsInputStockUpdaterFactory;
 import com.zhss.eshop.schedule.stock.StockUpdater;
 import com.zhss.eshop.wms.domain.PurchaseInputOrderDTO;
 import com.zhss.eshop.wms.domain.PurchaseInputOrderItemDTO;
@@ -46,9 +46,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Autowired
 	private SaleDeliveryOrderBuilderFactory saleDeliveryOrderBuilderFactory;
 	
-	private PurchaseInputStockUpdaterFactory<PurchaseInputOrderDTO> purchaseInputStockUpdaterFactory;
+	private SchedulePurchaseInputStockUpdaterFactory<PurchaseInputOrderDTO> purchaseInputStockUpdaterFactory;
 	
-	private ReturnGoodsInputStockUpdaterFactory<ReturnGoodsInputOrderDTO> returnGoodsInputStockUpdaterFactory;
+	private ScheduleReturnGoodsInputStockUpdaterFactory<ReturnGoodsInputOrderDTO> returnGoodsInputStockUpdaterFactory;
 	
 	/**
 	 * 库存中心
