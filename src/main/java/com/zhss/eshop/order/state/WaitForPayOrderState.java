@@ -52,9 +52,4 @@ public class WaitForPayOrderState implements OrderState {
 		return true;
 	}
 
-	@Override
-	public void Pay(OrderInfoDTO order) throws Exception {
-
-	}
-
 }

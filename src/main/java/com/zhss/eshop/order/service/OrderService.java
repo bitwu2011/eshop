@@ -72,5 +72,12 @@ public interface OrderService {
 	 * @return 处理结果
 	 */
 	Boolean informBatchPublishCommentEvent(List<Long> orderIds);
+
+	/**
+	 * 通知订单中心， 支付订单成功
+	 * @param orderInfoId
+	 * @return
+	 */
+	Boolean informPayOrderSuccessed(Long orderInfoId) throws Exception;
 	
 }

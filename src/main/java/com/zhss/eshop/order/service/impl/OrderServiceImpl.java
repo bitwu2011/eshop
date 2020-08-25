@@ -3,6 +3,14 @@ package com.zhss.eshop.order.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.zhss.eshop.Inventory.service.InventoryService;
+import com.zhss.eshop.membership.service.MembershipService;
+import com.zhss.eshop.order.constant.OrderOperateType;
+import com.zhss.eshop.order.dao.OrderOperateLogDAO;
+import com.zhss.eshop.order.service.OrderInfoService;
+import com.zhss.eshop.order.state.OrderStateManager;
+import com.zhss.eshop.schedule.service.ScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhss.eshop.order.domain.OrderInfoDTO;
@@ -15,6 +23,27 @@ import com.zhss.eshop.order.service.OrderService;
  */
 @Service
 public class OrderServiceImpl implements OrderService {
+
+	@Autowired
+	OrderInfoService orderInfoService;
+
+	@Autowired
+	OrderStateManager orderStateManager;
+
+	@Autowired
+	OrderOperateLogDAO orderOperateLogDAO;
+
+	@Autowired
+	InventoryService inventoryService;
+
+	@Autowired
+	ScheduleService scheduleService;
+
+	@Autowired
+	MembershipService membershipService;
+
+	@Autowired
+	OrderOperateLogFactory orderOperateLogFactory;
 	
 	/**
 	 * 通知订单中心，“商品完成发货”事件发生了
@@ -95,5 +124,18 @@ public class OrderServiceImpl implements OrderService {
 	public Boolean informBatchPublishCommentEvent(List<Long> orderIds) {
 		return true;
 	}
-	
+
+	@Override
+	public Boolean informPayOrderSuccessed(Long orderInfoId) throws Exception {
+		//这里天然的可以用分布式事务
+		OrderInfoDTO order= orderInfoService.getById(orderInfoId);
+		orderStateManager.pay(order);
+		orderOperateLogDAO.save(orderOperateLogFactory.get(order, OrderOperateType.PAY_ORDER));
+		inventoryService.informPayOrderEvent(order);
+		scheduleService.scheduleSaleDelivery(order);
+		membershipService.informPayOrderEvent(order.getUserAccountId(), order.getPayableAmount());
+		return true;
+	}
+
+
 }

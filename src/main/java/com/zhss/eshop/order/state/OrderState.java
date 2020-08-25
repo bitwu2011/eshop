@@ -30,12 +30,5 @@ public interface OrderState {
 	 */
 	Boolean canPay(OrderInfoDTO order) throws  Exception;
 
-	/**
-	 * 进行支付订单操作
-	 * @param order
-	 * @return
-	 * @throws Exception
-	 */
-	void Pay(OrderInfoDTO order) throws  Exception;
 	
 }

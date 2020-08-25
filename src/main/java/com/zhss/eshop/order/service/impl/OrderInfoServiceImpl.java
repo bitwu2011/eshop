@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.zhss.eshop.pay.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,6 +110,9 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 	 */
 	@Autowired
 	private OrderStateManager orderStateManager;
+
+	@Autowired
+	PayService payService;
 	
 	/**
 	 * 计算订单价格
@@ -164,7 +168,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 	
 	/**
 	 * 获取一个订单价格计算工厂
-	 * @param promotionActivityType 促销活动类型
+	 * @param PromotionActivityDTO 促销活动类型
 	 * @return 订单价格计算工厂
 	 */
 	private OrderPriceCalculatorFactory getOrderPriceCalculatorFactory(
@@ -304,7 +308,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 	 * @throws Exception
 	 */
 	public Boolean cancel(Long id) throws Exception {
-		OrderInfoDTO order = getOrderInfoDTO(id);
+		OrderInfoDTO order = getById(id);
 		if(order == null ) {
 			return false;
 		}
@@ -320,20 +324,15 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 		
 		return true;
 	}
-	
-	/**
-	 * 获取订单DTO
-	 * @param orderInfoDO
-	 * @return
-	 * @throws Exception
-	 */
-	private OrderInfoDTO getOrderInfoDTO(Long id) throws Exception {
-		OrderInfoDO orderInfoDO = orderInfoDAO.getById(id);
-		OrderInfoDTO orderInfoDTO = orderInfoDO.clone(OrderInfoDTO.class);
-		List<OrderItemDTO> orderItems = ObjectUtils.convertList(
-				orderItemDAO.listByOrderInfoId(orderInfoDTO.getId()), OrderItemDTO.class);
-		orderInfoDTO.setOrderItems(orderItems);
-		return orderInfoDTO;
+
+	@Override
+	public String pay(Long id) throws Exception {
+		OrderInfoDTO order = getById(id);
+		if(!orderStateManager.canPay(order)){
+			return null;
+		}
+		return payService.getQrCode(order);
 	}
-	
+
+
 }

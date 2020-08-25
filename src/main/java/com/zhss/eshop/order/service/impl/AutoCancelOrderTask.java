@@ -20,12 +20,15 @@ import com.zhss.eshop.order.domain.OrderInfoDTO;
 import com.zhss.eshop.order.domain.OrderItemDTO;
 import com.zhss.eshop.order.state.OrderStateManager;
 
+import javax.transaction.Transactional;
+
 /**
  * 自动取消订单任务
  * @author zhonghuashishan
  *
  */
 @Component
+@Transactional
 public class AutoCancelOrderTask {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AutoCancelOrderTask.class);
